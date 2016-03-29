@@ -1,0 +1,14 @@
+<!DOCTYPE HTML>
+<html lang="en">
+  <head>
+    <script type="text/javascript" src="elm.js"></script>
+  </head>
+  <body>
+  </body>
+  <script type="text/javascript">
+    var app = Elm.fullscreen(Elm.Main, { });
+    app.ports.outgoing.subscribe(function(state) {
+      throw(state);
+    });
+  </script>
+</html>

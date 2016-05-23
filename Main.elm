@@ -1,17 +1,42 @@
-module Main (main) where
+port module Main exposing (main)
 
-import Graphics.Element exposing (show)
-import Time exposing (every, second)
-
-
-currentTime =
-  every second
+import Html
+import Html.App
+import Time exposing (Time, second)
 
 
 main =
-  Signal.map show currentTime
+    Html.App.program
+        { init = ( 0, Cmd.none )
+        , view = (\model -> Html.text <| toString model)
+        , update = update
+        , subscriptions = (\_ -> Time.every second Tick)
+        }
 
 
-port outgoing : Signal Time.Time
-port outgoing =
-  currentTime
+
+-- MODEL
+
+
+type alias Model =
+    Time
+
+
+
+-- UPDATE
+
+
+type Msg
+    = Tick Time
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update (Tick newTime) model =
+    ( newTime, outgoing newTime )
+
+
+
+-- PORTS
+
+
+port outgoing : Model -> Cmd msg
